@@ -1,0 +1,82 @@
+﻿.contact-container { width:200px; padding:5px; border:1px solid #aaa; margin:60px 10px 10px 25px; float:left; font-family:sans-serif; color:#333; background-color:#eee; font-size:smaller; }
+.contact-container h1 { margin:0; font-weight:normal; }
+.contact-container h1 span { float:right; font-size:14px; line-height:24px; font-weight:normal; }
+.contact-container img { border-width:1px; border-style:solid; border-color:#fff; border-right-color:#aaa; border-bottom-color:#aaa; margin-right:10px; float:left; }
+.contact-container div { margin-bottom:24px; font-size:14px; }
+.contact-container a { color:#333;}
+.contact-container dl { margin:0; float:left; font-size:14px; }
+.contact-container dt, .contact-container dd { margin:0; float:left; }
+.contact-container dt { width:50px; clear:left; }
+
+.menu, .content
+{
+    min-height: 600px;
+    height: auto !important;
+    height: 600px;
+    display: inline-block;
+    vertical-align: top;
+}
+.menu
+{
+    width: 15%;
+    margin-top: -1px;
+}
+.menu ul, li
+{
+    padding: 0px;
+    margin: 0px;
+}
+.menu li a
+{
+    padding: 15px;
+    margin: 0px;
+    border-bottom: solid 1px silver;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(15, 15, 15, 0.8);
+    background-color: #fff;
+    background-image: url(../images/libg.png);
+    background-repeat: repeat;
+    display: block;
+}
+.menu li a:hover
+{
+    background-image: url(../images/libluebg.png);
+    background-repeat: repeat;
+}
+.menu li .selected
+{
+    background-image: url(../images/libluebg.png);
+    background-repeat: repeat;
+}
+.selectedlink
+{
+    color: #f2c11f !important;
+}
+
+.menu li ul
+{
+    background-color: #707070 !important;
+    border-bottom: solid 1px silver;
+    display: none;
+}
+.menu li li
+{
+    list-style-type: square;
+    margin-left: 30px;
+    color: #fff;
+    background-image: none !important;
+}
+.menu li li a
+{
+    padding: 10px;
+    padding-left: 0px !important;
+    margin: 0px;
+    border-bottom: none !important;
+    font-size: 12px;
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(15, 15, 15, 0.8);
+    background-color: #707070 !important;
+    display: block;
+    background-image: none !important;
+}
