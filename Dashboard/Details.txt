@@ -1,0 +1,3 @@
+This application demonstrates basic dashboard with charts. 
+Data is fetched from the serverusing REST APIs.
+High charts are used for charting.
