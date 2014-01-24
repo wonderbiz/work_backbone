@@ -120,10 +120,31 @@ var ApplicationRouter = Backbone.Router.extend({
         cData.fetch();
     },
     Organisation: function () {
-        var rData = new RegSecDataCollection([], { id: 2 });
+        var _this = this;
+        var rData = new OrganisationDataCollection([], { id: 2 });
+        if(!this.savedModel)
+        {
+            this.savedModel = new Backbone.Collection;
+        }
+              
         $('#container').html("");
         $('#containerChart').css('display', 'none');
         this.selectPill('li.org_tab');
+
+        
+      
+        if(this.savedModel.length == 0)
+        {       
+            rData.fetch({
+                success: function(model,resp){
+                    _this.savedModel.add(model.models);
+                }
+            });
+        }
+        else
+        {
+            rData.add(this.savedModel.models);
+        }
 
         var CTableView = new ComTableView({
             tableHeader: 'Details By Organisation',
@@ -132,11 +153,10 @@ var ApplicationRouter = Backbone.Router.extend({
             el: $('#container'),
             model: rData
         });
-        rData.fetch();
-
+      
     },
     Business: function () {
-        var rData = new RegSecDataCollection([], { id: 3 });
+        var rData = new BusinessDataCollection([], { id: 3 });
         $('#container').html("");
         $('#containerChart').css('display', 'none');
         this.selectPill('li.business_tab');
@@ -153,7 +173,7 @@ var ApplicationRouter = Backbone.Router.extend({
 
     },
     Products: function () {
-        var rData = new RegSecDataCollection([], { id: 4 });
+        var rData = new ProductsDataCollection([], { id: 4 });
         $('#container').html("");
         $('#containerChart').css('display', 'none');
         this.selectPill('li.products_tab');
@@ -173,7 +193,7 @@ var ApplicationRouter = Backbone.Router.extend({
    
 
     Source: function () {
-        var rData = new RegSecDataCollection([], { id: 5 });
+        var rData = new SourceDataCollection([], { id: 5 });
         $('#container').html("");
         $('#containerChart').css('display', 'none');
         this.selectPill('li.source_tab');
@@ -192,7 +212,7 @@ var ApplicationRouter = Backbone.Router.extend({
 
 
     Decission: function () {
-        var rData = new RegSecDataCollection([], { id: 8 });
+        var rData = new DecissionDataCollection([], { id: 8 });
         $('#container').html("");
         $('#containerChart').css('display', 'none');
         this.selectPill('li.decission_tab');

@@ -20,32 +20,56 @@ var TableView = Backbone.View.extend({
 
             var values = new Backbone.Collection(model.get('Value'));
 
-            var containerBox = $("<div class=\"col-lg-6\" />").append("<div class=\"table-responsive\"/>");
+               var containerBox = $("<div class=\"col-lg-6\"  />").append("<div  class=\"panel panel-default\" id=\"accordion2\" style=\"height:250px;margin-bottom:20px;\" />");
+
+
+            containerBox.find('.panel').append("<div class=\"panel-heading\"/>");
+
 
             if (index == 0) {
-                containerBox.find('.table-responsive').append("<h3> General Details </h3><table class=\"table table-striped table-condensed\"/> ");
+               containerBox.find('.panel-heading').append("<h4>General Details </h4> <a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapseOne\">  </a> ");
+               containerBox.find('.panel').append(" <div id=\"collapseOne\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 1) {
-                containerBox.find('.table-responsive').append("<h3> Details By Country </h3><table class=\"table table-striped table-condensed\"/>");
+                 containerBox.find('.panel-heading').append("<h4> Details By Country</h4> <a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse2\"></a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse2\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 2) {
-                containerBox.find('.table-responsive').append("<h3> Details By Organization </h3><table class=\"table table-striped table-condensed\"/>");
+                containerBox.find('.panel-heading').append("<h4> Details By Organization </h4><a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse3\"></a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse3\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 3) {
-                containerBox.find('.table-responsive').append("<h3> Details By Nature of Business </h3><table class=\"table table-striped table-condensed\"/>");
+                 containerBox.find('.panel-heading').append("<h4> Details By Nature of Business </h4><a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse4\"></a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse4\" class=\"accordion-body collapse  in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 4) {
-                containerBox.find('.table-responsive').append("<h3> Details By Product Interest </h3><table class=\"table table-striped table-condensed\"/>");
+                  containerBox.find('.panel-heading').append("<h4> Details By Product Interest </h4><a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse5\"> </a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse5\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 5) {
-                containerBox.find('.table-responsive').append("<h3> Details By Source </h3><table class=\"table table-striped table-condensed\"/>");
+                 containerBox.find('.panel-heading').append("<h4> Details By Source </h4><a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse6\"> </a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse6\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
             if (index == 6) {
-                containerBox.find('.table-responsive').append("<h3>Details By Decision </h3><table class=\"table table-striped table-condensed\"/>");
+                  containerBox.find('.panel-heading').append("<h4> Details By Decision </h4><a class=\"minimize\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse7\"></a> ");
+               containerBox.find('.panel').append(" <div id=\"collapse7\" class=\"accordion-body collapse in\" style=\"height: 0px;\"/>");
+               containerBox.find('.accordion-body').append("<div class=\"accordion-inner\"/>");
+                containerBox.find('.accordion-inner').append("<table class=\"table table-striped table-condensed\"/>");
             }
 
-            //            containerBox.find('.table').append("<thead> <tr> <th>Key </th><th> Value</th></tr></thead>");
-
+         
             if (index == 0) {
                 values.each(function (row) {
                     indexRow++;
@@ -122,7 +146,7 @@ var TableView = Backbone.View.extend({
 
         });
         this.$el.append(container.children());
-
+          sort();
     }
 
 });
@@ -201,7 +225,7 @@ var ComUserTableView = Backbone.View.extend({
        $('#containerChart').css('display', 'block');
         var containerBox = $("<div class=\"col-lg-6\" />").append("<align=\"right\"><div id =\"div-wrap\" class=\"DivWrap\" /> ");
         containerBox.find('.DivWrap').append("<a href = #id =\"b1\" onclick = clickme('" + this.options.filter + "'); ><span class=\"glyphicon glyphicon-import\"></span>  Export to Excel </a></right>");
-        containerBox.find('.DivWrap').append("<div class=\"table-responsive\" id =\"tableWrap\"/>");
+        containerBox.find('.DivWrap').append("<div class=\"table-responsive \" id =\"tableWrap\"/>");
 
         containerBox.find('.table-responsive').append("<h3> " + this.options.tableHeader + " </h3> <table id=\"tableContent\" class=\"table table-striped table-condensed display\" />");
         containerBox.find('.table').append("<thead> <tr> <th>Name </th><th> Company</th><th> Nature of Business</th></tr></thead>");
@@ -225,13 +249,14 @@ var ComUserTableView = Backbone.View.extend({
 
         if (indexRow <= 10) {
             $('#tableContent').dataTable({
-
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": false
             });
         }
         else {
             $('#tableContent').dataTable({
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": true
             });
@@ -303,6 +328,11 @@ var ComTableView = Backbone.View.extend({
             _this.$el.constructor(".loading").remove();
             _this.render();
         });
+        if(this.model.length)
+        {
+            _this.$el.constructor(".loading").remove();
+            _this.render();
+        }
     },
     render: function () {
         var dataArrayCount = [];
@@ -335,7 +365,7 @@ var ComTableView = Backbone.View.extend({
             
             if (indexRow <= 10) {
             $('#tableContent').dataTable({
-
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": false,
                  "bFilter": false,
@@ -347,6 +377,7 @@ var ComTableView = Backbone.View.extend({
         }
         else {
             $('#tableContent').dataTable({
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": true,
                 "bFilter": false,
@@ -364,6 +395,8 @@ var ComTableView = Backbone.View.extend({
             
         }
         else {
+
+
             this.model.each(function (model, index, data) {
                 var CrowView = new RegSecTableRowView({
                     tagName: 'tr',
@@ -382,7 +415,7 @@ var ComTableView = Backbone.View.extend({
 
         if (indexRow <= 10) {
             $('#tableContent').dataTable({
-
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": false,
                  "bFilter": false,
@@ -396,6 +429,7 @@ var ComTableView = Backbone.View.extend({
         else {
         var dataCountSet = [];
             $('#tableContent').dataTable({
+             "bJQueryUI": true,
                 "bLengthChange": true,
                 "bPaginate": true,
                 "bFilter": false,
