@@ -7,19 +7,21 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Admin Dashboard</title>
-    <link rel="Stylesheet" href="assets/css/screen.css" />
-    <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <!--<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">-->
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
-    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
     
+    <link rel="Stylesheet" href="assets/css/screen.css" />
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" media="screen">
+   <!-- <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">-->
     <!-- custom CSS here -->
     <link href="assets/css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <!--<link rel="stylesheet" href="assets/css/jquery.dataTables.css">-->
-    <!--<link rel="stylesheet" href="assets/css/demo_table.css">-->
+    <link rel="stylesheet" href="assets/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="assets/css/demo_table.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui-1.10.4.custom.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui-1.10.4.custom.min.css">
+
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
     <style>
@@ -57,10 +59,31 @@
             margin: 0 1em 1em 0;
             height: 50px;
         }
+        #sidebar {
+            
+            width: 40px;
+            height: 100%;   
+            position:fixed;
+            top: 70px;
+            background: #ffffff;
+       
+            transition:  0.1s;
+            
+        }
     </style>
     <script type="text/javascript" charset="utf-8" src="assets/scripts/jquery.js"></script>
+     <script type="text/javascript" charset="utf-8" src="assets/scripts/jquery.cookie.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script type="text/javascript" language="javascript">
+
+        $(document).ready(function () {
+
+            $('#sidebar').hide();
+
+           
+
+        });
+
         function getCookie(cname) {
             var name = cname + "=";
             var ca = document.cookie.split(';');
@@ -83,7 +106,16 @@
             document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             document.location.href = "logInAccess.html";
         }
+         function showChart() {
+                $('#containerTable').hide();
+                $('#containerChart').show();
 
+            }
+             function showTabularData() {
+                $('#containerChart').hide();
+                   $('#containerTable').show();
+
+            }
         function sort() {
             $(".col-lg-6").sortable({
 
@@ -123,7 +155,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="dashboard.htm"><img src="assets/images/messe.png" />Medical Fair India- 2014</img></a>
+          <a class="navbar-brand" href="dashboard.htm"><img src="assets/images/messe.png" /><b>Medical Fair India- 2014</b></img></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -152,46 +184,112 @@
         </div>
         <!-- /.navbar-collapse -->
       </nav>
-        <div class="container1">
-            <script id='code_1'>
-                $(function () {
-                    //Keep track of how many swipes
-                    var count = 0;
 
-                    //Enable swiping...
-                    $(".side-nav").swipe({
-                        //Generic swipe handler for all directions
-                        swipeLeft: function (event, direction, distance, duration, fingerCount) {
-                            $(".side-nav").css("width", "25px");
-                            $("#page-wrapper").css("margin-left", "-210px");
-                            $("#page-wrapper").css("width", "118%");
-                        },
-                        //Generic swipe handler for all directions
-                        swipeRight: function (event, direction, distance, duration, fingerCount) {
-                            $(".side-nav").css("width", "225px");
-                            $("#page-wrapper").css("margin-left", "0px");
-                            $("#page-wrapper").css("width", "100%");
-                        },
-                        //Default is 75px, set to 0 for demo so any distance triggers swipe
-                        threshold: 0
-                    });
-                });
+      <div class="container1">
+			
+			<script id='code_1'>
+			    $(function () {
+			        //Keep track of how many swipes
+			        var count = 0;
+
+			        //Enable swiping...
+			        $(".side-nav").swipe({
+			            //Generic swipe handler for all directions
+			            swipeLeft: function (event, direction, distance, duration, fingerCount) {
+			                $(".side-nav").css("width", "-20px");
+			                $("#page-wrapper").css("margin-left", "-210px");
+			                $("#page-wrapper").css("width", "118%");
+			                $("#sidebar").css("margin-left", "-230px");
+			                $("#sidebar").css("background-image", "-webkit-linear-gradient(#6d94bf, #446e9b 25%, #3e648d)");
+                            $("#sidebar").css("background-image", "linear-gradient(#6d94bf, #446e9b -5%, #3e648d)");
+                            $("#sidebar").css("background-repeat", "no-repeat");
+
+			                $('#sidebar').show(); 
+			            },
+//			            //Generic swipe handler for all directions
+//			            swipeRight: function (event, direction, distance, duration, fingerCount) {
+//			                $(".side-nav").css("width", "225px");
+//			                $("#page-wrapper").css("margin-left", "0px");
+//			                $("#page-wrapper").css("width", "100%");
+//			            },
+			            //Default is 75px, set to 0 for demo so any distance triggers swipe
+			            threshold: 0
+			        });
+
+			        //Enable swiping...
+			        $("#sidebar").swipe({
+
+
+			            //Generic swipe handler for all directions
+			            swipeRight: function (event, direction, distance, duration, fingerCount) {
+			                $(".side-nav").css("width", "225px");
+			                $("#page-wrapper").css("margin-left", "0px");
+			                $("#page-wrapper").css("width", "100%");
+			                $('#sidebar').hide();
+			            },
+			            //Default is 75px, set to 0 for demo so any distance triggers swipe
+			            threshold: 0
+			        });
+
+			    });
+			   
+			       
+
+			       
+			   
 			</script>
-        </div>
-        <div class="row" id="page-wrapper">
+			<div id="sidebar">
+    
+            </div>
+			
+		</div>		
+
+        
+
+            <div class="row" id="page-wrapper">
+            <center>
+            <div id = "chartTableToggle" style="margin-top: 40px;height: 53px;margin-left:10px;" class="breadcrumb" >
+                 <div class="btn-group " data-toggle="buttons"  style="float: right;">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" id="Radio1">
+                    <a href="#showTabularData" onclick="showTabularData()" style="color: White; font-style: normal;
+                        text-decoration: none;"><div style="width:100%;height:100%;"> Tabular </div></a>
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" id="Radio2">
+                    <a href="#showChart" onclick="showChart()" style="color: White; font-style: normal;
+                        text-decoration: none;"><div style="width:100%;height:100%;">Charts </div></a>
+                </label>
+            </div>
+            </div>
+        </center>
             <!-- Container to load Dynamic data -->
-            <div id="container" style="margin-top: 65px;">
-            </div>
-            <div class="col-lg-6" style="min-width: 300px;">
+            
+            <div id="container" style="margin-top: 40px;"></div>
+                <div id="containerTable" style="margin-top: 40px;"></div>
+            
+           
                 <!-- Container to load Dynamic charts -->
-                <div id="containerChart" style="margin-top: 45px;">
+                <div id="containerChart" style="margin-top: 0px;">
                 </div>
-            </div>
+
+           
+
         </div>
+         
         <!-- JavaScript -->
+       
+
         <script type="text/javascript" src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-        <script src="assets/scripts/jquery.touchSwipe.min.js" type="text/javascript"></script>
-        <script src="assets/scripts/main.js" type="text/javascript"></script>
+       
+    <script src="assets/scripts/jquery.touchSwipe.min.js" type="text/javascript"></script>
+
+        
+    <script src="assets/scripts/main.js" type="text/javascript"></script>
+
+
+
+
         <script type="text/javascript" charset="utf-8" src="assets/scripts/jquery.dataTables.js"></script>
         <script type="text/javascript" src="assets/scripts/num-html.js"></script>
         <script type="text/javascript" src="assets/scripts/num-html-sorting.js"></script>

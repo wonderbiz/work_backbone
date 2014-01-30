@@ -1,5 +1,7 @@
 ﻿<!--Copyright © 2014 WonderBiz Technologies Pvt. ltd.  -->
 
+var navigatorPath= null;
+ var chartHeaderName="";
 /* this Table view will render admin home page data.*/
 var TableView = Backbone.View.extend({
     initialize: function () {
@@ -14,6 +16,9 @@ var TableView = Backbone.View.extend({
     render: function () {
         var indexRow = 0;
         var self = this;
+         var currentTabUrl = "Dashboard";
+         navigatorPath="<u><a href="+window.location.href+"> Back to "+currentTabUrl+"</a></u>";
+        $.cookie("navigatorVal", navigatorPath);
         this.rowViews = {};
         container = $('<div/>')
         this.model.each(function (model, index, data) {
@@ -176,21 +181,33 @@ var TableRowViewForGeneral = Backbone.View.extend({
 
 /*rowview to include in tableview of country section in admin dashboard*/
 var CountryTableRowView = Backbone.View.extend({
-    template: _.template("<td> <%=CountryName%> </td> <td><a href=\"dashboard.htm#country/<%=Country_id%>\"> <%=Count%> </a> </td>"),
+
+    template: _.template("<td><a href=\"dashboard.htm#country/<%=id%>\" onclick=\"HeaderName('<%=name%>','<%=id%>')\";><div style=\"width:100%;height:100%;\"> <%=name%>  </div> </a> </td> <td><%=y%>  </td>"),
     render: function () {
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
 });
 
+
+
 /*rowview to include in tableview of other sections in admin dashboard*/
 var RegSecTableRowView = Backbone.View.extend({
-    template: _.template("<td> <%=Description%> </td> <td><a href=\"dashboard.htm#regsec/<%=SectionDetailId%>\"> <%=Count%> </a> </td>"),
+
+    template: _.template("<td><a href=\"dashboard.htm#regsec/<%=id%>\" onclick=\"HeaderName('<%=name%>','<%=id%>');\"><div style=\"width:100%;height:100%;\"> <%=name%>   </div> </a> </td> <td> <%=y%> </td>"),
     render: function () {
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
 });
+
+function HeaderName(strName,id)
+{
+
+ $.cookie("TableHeaderSubName", chartHeaderName+"- "+strName);
+
+ return false;
+}
 
 /*rowview to include in Common User TableView */
 var UserTableRowView = Backbone.View.extend({
@@ -208,7 +225,8 @@ var ComUserTableView = Backbone.View.extend({
 
         var _this = this;
 
-        this.$el.append("<center><span class='loading'><img src=\"assets/images/loadingImage.gif\" alt=\"Loading...\" class=\"img-responsive\" style=\"margin: 0 auto;\"></span></center>");
+        this.$el.append(
+        "<center><span class='loading'><img src=\"assets/images/loadingImage.gif\" alt=\"Loading...\" class=\"img-responsive\" style=\"margin: 0 auto;\"></span></center>");
         this.model.on('reset', function () {
             _this.$el.constructor(".loading").remove(); 
             _this.render();
@@ -218,22 +236,22 @@ var ComUserTableView = Backbone.View.extend({
         var indexRow = 0;
         var count = 0;
 
-
+          navigatorPath=$.cookie('navigatorVal');
         var self = this;
-        this.rowViews = {};
+        this.rowViews = {}; 
         container = $('<div/>');
        $('#containerChart').css('display', 'block');
-        var containerBox = $("<div class=\"col-lg-6\" />").append("<align=\"right\"><div id =\"div-wrap\" class=\"DivWrap\" /> ");
-        containerBox.find('.DivWrap').append("<a href = #id =\"b1\" onclick = clickme('" + this.options.filter + "'); ><span class=\"glyphicon glyphicon-import\"></span>  Export to Excel </a></right>");
+        var containerBox = $("<div class=\"col-lg-12\">").append("<align=\"right\"><div id =\"div-wrap\" class=\"DivWrap\" /> ");
+        containerBox.find('.DivWrap').append("<a href = #id =\"b1\" onclick = clickme('" + this.options.filter + "'); ><span class=\"glyphicon glyphicon-import\"></span>  Export to Excel </a></right><div id=\"nevTab\" align=\"right\">"+navigatorPath+"</div>");
         containerBox.find('.DivWrap').append("<div class=\"table-responsive \" id =\"tableWrap\"/>");
 
-        containerBox.find('.table-responsive').append("<h3> " + this.options.tableHeader + " </h3> <table id=\"tableContent\" class=\"table table-striped table-condensed display\" />");
+        containerBox.find('.table-responsive').append("<h3> " + this.options.tableHeader+", "+$.cookie('TableHeaderSubName')+"</h3> <table id=\"tableContent\" class=\"table table-striped table-condensed display\" />");
         containerBox.find('.table').append("<thead> <tr> <th>Name </th><th> Company</th><th> Nature of Business</th></tr></thead>");
 
         this.model.each(function (model, index, data) {
             var UrowView = new UserTableRowView({
                 tagName: 'tr',
-                model: model
+                model: model    
 
             })
             containerBox.find('.table').append(UrowView.render().$el);
@@ -243,7 +261,7 @@ var ComUserTableView = Backbone.View.extend({
             indexRow++;
             
         });
-        //        alert(template(this.model.toJSON()));
+        
 
         this.$el.append(container.children());
 
@@ -256,14 +274,58 @@ var ComUserTableView = Backbone.View.extend({
         }
         else {
             $('#tableContent').dataTable({
-             "bJQueryUI": true,
+             
                 "bLengthChange": true,
-                "bPaginate": true
+                "bPaginate": true,
+                "bLengthChange": true,
+                  "bJQueryUI": true,
+		"sPaginationType": "full_numbers",
+                "bInfo": true
             });
         }
 
     }
 });
+var count = 0;
+var DashboardChartView = Backbone.View.extend({
+
+   initialize: function (options) {
+
+        var _this = this;
+
+        this.$el.append("<center> <span class='loading'><img src=\"assets/images/loadingImage.gif\" alt=\"Loading...\" class=\"img-responsive\" style=\"margin: 0 auto;\"></span></center>");
+        this.model.on('reset', function () {
+            _this.$el.constructor(".loading").remove();
+            _this.render();
+        });
+        if(this.model.length)
+        {
+              _this.$el.constructor(".loading").remove();
+            _this.render();
+        }
+
+    },
+     render: function () {
+
+         var url = null;
+        var divName = "charts"+count;
+        this.$el.append('<div id='+divName+' class=\"col-lg-6\" style="\margin-top: 30px\";></div>');
+        count++;
+        if (this.options.classificationCode=="pie")
+        {
+        if(this.options.chartHeader=="Country")
+        {
+             url="#country/"; 
+        }
+        else
+        {
+             url="#regsec/"; 
+        }
+        }
+        drawOrgChart(this.model,this.options.chartHeader,this.options.classificationCode,divName,url);
+    }
+});
+
 var series = [];
 var seriesOne = {};
 seriesOne.name = "Registrations"; 
@@ -318,9 +380,9 @@ var ComUserTableChartView = Backbone.View.extend({
 var data = [];
 /*TableView to render charts and data of users */
 var ComTableView = Backbone.View.extend({
-
+    
     initialize: function (options) {
-
+      
         var _this = this;
 
         this.$el.append("<center> <span class='loading'><img src=\"assets/images/loadingImage.gif\" alt=\"Loading...\" class=\"img-responsive\" style=\"margin: 0 auto;\"></span></center>");
@@ -334,6 +396,8 @@ var ComTableView = Backbone.View.extend({
             _this.render();
         }
     },
+    
+   
     render: function () {
         var dataArrayCount = [];
         var dataArrayName = [];
@@ -341,33 +405,39 @@ var ComTableView = Backbone.View.extend({
         var dataVariable = [];
         var indexRow = 0;
         var self = this;
+        var modelData;
+        var url = null;
+        var currentTabUrl = window.location.hash
+         navigatorPath="<u><a href="+window.location.href+"> Back "+"</a></u>";
+        $.cookie("navigatorVal", navigatorPath);
         this.rowViews = {};
         container = $('<div/>');
-        $('#containerChart').css('display', 'block');
-        var containerBox = $("<div class=\"col-lg-6\" />").append("<div class=\"table-responsive\"/>");
-        containerBox.find('.table-responsive').append("<h3> " + this.options.tableHeader + " </h3> <table id=\"tableContent\" class=\"table table-striped table-condensed display\"/>");
+       
+        var containerBox = $("<div class=\"col-lg-12\" />").append("<div class=\"table-responsive\" />");
+        containerBox.find('.table-responsive').append("<h3> " + this.options.tableHeader +" </h3> <table id=\"tableContent\" class=\"table table-striped table-condensed display\"/>");
         containerBox.find('.table').append("<thead> <tr><th> </th><th> </th></tr></thead>");
         if (this.options.tableHeader == 'Details By Country') {
             this.model.each(function (model, index, data) {
                 var CrowView = new CountryTableRowView({
                     tagName: 'tr',
-                    model: model
-
+                    model: model,
+                    modelData:model
                 })
-                dataArrayCount[index] = data[index].attributes.Count,
-                dataArrayName[index] = data[index].attributes.CountryName,
+
                 containerBox.find('.table').append(CrowView.render().$el);
                 container.append(containerBox);
-
-                this.data[index] = data[index];
-                 indexRow++;
+              
+                indexRow++;
             });
+            url="#country/";
+            
             
             if (indexRow <= 10) {
             $('#tableContent').dataTable({
-             "bJQueryUI": true,
+             
                 "bLengthChange": true,
                 "bPaginate": false,
+                "bJQueryUI": false,
                  "bFilter": false,
                 "aoColumnDefs": [
             { 'bSortable': false, 'aTargets': [0]}],
@@ -377,7 +447,7 @@ var ComTableView = Backbone.View.extend({
         }
         else {
             $('#tableContent').dataTable({
-             "bJQueryUI": true,
+            
                 "bLengthChange": true,
                 "bPaginate": true,
                 "bFilter": false,
@@ -390,32 +460,42 @@ var ComTableView = Backbone.View.extend({
             
             });
             }
-            series = generateData(dataArrayCount, dataArrayName);
-            pieChartPainter( this.options.chartHeader);
+            
+             var divName = "charts"+count;
+              $('#container').append('<div id='+divName+' style="\margin-top: 50px\";></div>');
+             count++;
+      
+            drawOrgChart(this.model,this.options.chartHeader,this.options.classificationCode,divName,url);
             
         }
         else {
 
+        
 
             this.model.each(function (model, index, data) {
                 var CrowView = new RegSecTableRowView({
                     tagName: 'tr',
                     model: model
                 })
-                dataArrayCount[index] = data[index].attributes.Count,
-                dataArrayName[index] = data[index].attributes.Description,
+               
                 containerBox.find('.table').append(CrowView.render().$el);
                 container.append(containerBox);
-                this.data[index] = data[index];
+               
                 indexRow++;
             });
+            url="#regsec/";
+                var divName = "charts"+count;
+             $('#container').append('<div id='+divName+'  style="\margin-top: 30px\";></div>');
+                count++;
+   
+            drawOrgChart(this.model,this.options.chartHeader,this.options.classificationCode,divName,url)
         }
 
-        this.$el.append(container.children());
+      this.$el.append(container.children());
 
         if (indexRow <= 10) {
             $('#tableContent').dataTable({
-             "bJQueryUI": true,
+             "bJQueryUI": false,
                 "bLengthChange": true,
                 "bPaginate": false,
                  "bFilter": false,
@@ -429,7 +509,7 @@ var ComTableView = Backbone.View.extend({
         else {
         var dataCountSet = [];
             $('#tableContent').dataTable({
-             "bJQueryUI": true,
+             "bJQueryUI": false,
                 "bLengthChange": true,
                 "bPaginate": true,
                 "bFilter": false,
@@ -441,14 +521,42 @@ var ComTableView = Backbone.View.extend({
             "aaSorting": [[1, "desc"]]
             
             });
-           
+
+         
 
         }
+      
+      
+
+    }
+            
     
-        if(this.options.classificationCode == 'pie'){
+    
+});
+ var dataArrayName = [];
+
+function drawOrgChart(model,chartName,chartType,divName,urlPath)
+{
+  var indexRow = 0;
+  var dataArrayCount = [];
+         dataArrayName = [];
+         dataArrayIds = [];
+        var series = [];
+        var dataCountSet =[];
+
+
+           model.each(function (model, index, data) {
+             
+                dataArrayCount[index] = data[index].attributes.y,
+                dataArrayName[index] = data[index].attributes.name.slice(0, 5)+'...',
+                dataArrayIds[index] = data[index].attributes.id
+                 indexRow++;
+                });
+
+             if(chartType == 'pie'){
             series = generateData(dataArrayCount, dataArrayName);
-            pieChartPainter( this.options.chartHeader);
-              
+            pieChartPainter(model,chartName,divName,urlPath);
+               chartHeaderName=chartName;
         }
          else{
             if(indexRow>10)
@@ -457,30 +565,33 @@ var ComTableView = Backbone.View.extend({
                 {
                     dataCountSet[k] = dataArrayCount[k];
                 }
-                series = generateData(dataCountSet, dataArrayName);  
+               // series = generateData(dataCountSet, dataArrayName);  
             }
             else
             {
-                series = generateData(dataArrayCount, dataArrayName);  
+                //series = generateData(dataArrayCount, dataArrayName);  
                 
-            }
-            barChartPainter(this.options.chartHeader,series);    
-        }
-          
-    }
             
-    
-    
-});
+            }
+             chartHeaderName=chartName;
+            barChartPainter(model,chartName,series,divName);   
 
-var barChartPainter = function(chartHeader,series)
+        }
+              
+    
+}
+
+
+
+var barChartPainter = function(model,chartHeader,series,divName)
 {
-     $('#containerChart').highcharts({
+
+    $('#'+divName).highcharts({
 
                 /* **** For Column Or Bar Chart Chart **** */
              chart: {
-                type: 'column',               // Give respective "type" of chart 
-//                margin: [ 0, 50, 0, 50]
+                type: 'column'             // Give respective "type" of chart 
+//                margin: [ 0, 50, 0, 50]   
             },  
        title: {
                text: chartHeader + ' wise Analysis',
@@ -506,18 +617,37 @@ var barChartPainter = function(chartHeader,series)
              
                 xAxis: {
                     title: {
-                        text: 'Registration Countries(Name)'
+                        text: chartHeader+' Catagories'
+                    },
+                         labels: {
+                     rotation: -45,
+                    align: 'right',
+                    
+                    
+                    style: {
+                        
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
                     }
                 },
+                      
+                    categories: dataArrayName }        ,                   
+                    
 
-                legend: {
-                    labelFormatter: function() {
-                        return this.name.slice(0, 20)+'...'
-                    }
-                 
-                },  
-                 plotOptions: {
-            pie: {
+                  plotOptions: {
+              
+                    column: {
+                       grouping: false,
+                    colorByPoint: true,
+                    allowPointSelect: true,
+                cursor: 'pointer',
+
+                dataLabels: {
+                    enabled: false,
+                     inside: true
+              }
+              } ,
+               pie: {
                 allowPointSelect: true, 
                 cursor: 'pointer',
                 dataLabels: {
@@ -525,17 +655,45 @@ var barChartPainter = function(chartHeader,series)
                     color: '#000000',
                     connectorColor: '#000000',
                     format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }               
+            }},
+             legend: {
+                    labelFormatter: function() {
+                        return this.name.slice(0, 20)+'...'
+                    },
+                       enabled:false
+                 
+                },
+      series: 
+      [{
+           
+            name: 'Total Registration ',  
+            data:  $.parseJSON(JSON.stringify(model, null, " ")),
+           
+            point:
+            {
+                events:
+                {
+                    click: function (e) {
+                    console.log(e.point);
+                    
+                     $.cookie("TableHeaderSubName",chartHeader+"- "+e.point.name);
+                        window.location = "dashboard.htm#regsec/"+e.point.id;
+                        //                      alert(e.point.y);
+                        
+                        e.preventDefault();
+                    }
                 }
-            }
-        },
-    
-          series: series     // For Bar Chart 
+            }   
+        }]
+});
 
-            });
 }
 
-var pieChartPainter = function(chartHeader) {
-    $('#containerChart').highcharts({
+var variableSlice = false;
+var tempSlice = null;
+var pieChartPainter = function(model,chartHeader,divName,urlPath) {
+    $('#'+divName).highcharts({
                   
                 /* **** For Pie Chart Chart **** */
                 chart: {
@@ -572,14 +730,38 @@ var pieChartPainter = function(chartHeader) {
                     series: [{
            
                 name: 'Total Registration ',  
-                data:  $.parseJSON(JSON.stringify(chartData, null, " "))
+                data:  $.parseJSON(JSON.stringify(model, null, " ")),
+
+                 point:{
+              events:{
+               
+                  click: function (e) {
+               
+                  if(variableSlice)
+                  {
+                        tempSlice.slice();
+                  }
+                  chartHeaderName=chartHeader;
+                   $.cookie("TableHeaderSubName",chartHeader+"- "+e.point.name);
+                  window.location = "dashboard.htm"+urlPath+e.point.id;
+                  e.point.slice();      
+                  tempSlice = e.point;            
+                 variableSlice = true;
+             console.log(e.point);
+                         e.preventDefault();
+                  }
+              
+              }
+              
+          }   
+           
             }]
 
         });
 };
 
 var TimeDateChartPainter = function(chartHeader,seriesData) {
-    $('#containerChart').highcharts({
+    $('#container').highcharts({
                 chart: {
                     zoomType: 'x',
                     spacingRight: 20
@@ -679,3 +861,4 @@ function clickme(filter) {
     location.href = url;
     return false;
 }
+

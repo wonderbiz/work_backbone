@@ -101,20 +101,21 @@ table.tablesorter thead tr th:hover {
 	padding: 3px 25px;
   }
 
-  /* Side Nav */
-
-  .side-nav {
-	margin-left: -225px;
-	left: 225px;
-	width: 225px;
-	position: fixed;
-	top: 75px;
-	height: 100%;
-	border-radius: 0;
-	border: none;
-	background-color: #222222;
-	overflow-y: auto;
-  }
+   .side-nav {
+margin-left: -225px;
+left: 225px;
+width: 225px;
+position: fixed;
+top: 72px;
+height: 100%;
+border-radius: 0;
+border: none;
+background-image: -webkit-linear-gradient(#6d94bf, #446e9b 25%, #3e648d);
+background-image: linear-gradient(#6d94bf, #446e9b -5%, #3e648d);
+background-repeat: no-repeat;
+    
+overflow-x: auto;
+}
 
   /* Bootstrap Default Overrides - Customized Dropdowns for the Side Nav */
 
@@ -148,7 +149,8 @@ table.tablesorter thead tr th:hover {
 
   .navbar-inverse .navbar-nav>li>a:hover,
   .navbar-inverse .navbar-nav>li>a:focus {
-	background-color: #080808;
+	background-color: #345578;
+font-weight: bold;
   }
 
   /* Nav Messages */
@@ -162,3 +164,6 @@ table.tablesorter thead tr th:hover {
   }
 
 }
+ /* Side Nav */
+
+ 
