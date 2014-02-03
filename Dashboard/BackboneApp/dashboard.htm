@@ -12,12 +12,12 @@
     <link rel="Stylesheet" href="assets/css/screen.css" />
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" media="screen">
-   <!-- <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">-->
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
     <!-- custom CSS here -->
     <link href="assets/css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/jquery.dataTables.css">
+    <!--<link rel="stylesheet" href="assets/css/jquery.dataTables.css">-->
     <link rel="stylesheet" href="assets/css/demo_table.css">
     <link rel="stylesheet" href="assets/css/jquery-ui-1.10.4.custom.css">
     <link rel="stylesheet" href="assets/css/jquery-ui-1.10.4.custom.min.css">
@@ -109,10 +109,12 @@
          function showChart() {
                 $('#containerTable').hide();
                 $('#containerChart').show();
+                $('#container').show();
 
             }
              function showTabularData() {
-                $('#containerChart').hide();
+                 $('#containerChart').hide();
+                 $('#container').hide();
                    $('#containerTable').show();
 
             }
@@ -155,7 +157,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="dashboard.htm"><img src="assets/images/messe.png" /><b>Medical Fair India- 2014</b></img></a>
+          <a class="navbar-brand" href="dashboard.htm"><img src="assets/images/messe.png" /><b class="dashboard-heading">Registration Stats</b></img></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -250,12 +252,12 @@
             <center>
             <div id = "chartTableToggle" style="margin-top: 40px;height: 53px;margin-left:10px;" class="breadcrumb" >
                  <div class="btn-group " data-toggle="buttons"  style="float: right;">
-                <label class="btn btn-primary">
+                <label id="btnTAb"  class="btn btn-primary">
                     <input type="radio" name="options" id="Radio1">
                     <a href="#showTabularData" onclick="showTabularData()" style="color: White; font-style: normal;
                         text-decoration: none;"><div style="width:100%;height:100%;"> Tabular </div></a>
                 </label>
-                <label class="btn btn-primary active">
+                <label id="btnChart" class="btn btn-primary active">
                     <input type="radio" name="options" id="Radio2">
                     <a href="#showChart" onclick="showChart()" style="color: White; font-style: normal;
                         text-decoration: none;"><div style="width:100%;height:100%;">Charts </div></a>
@@ -265,10 +267,10 @@
         </center>
             <!-- Container to load Dynamic data -->
             
-            <div id="container" style="margin-top: 40px;"></div>
+            <div id="container" style="margin-top: 0px;"></div>
                 <div id="containerTable" style="margin-top: 40px;"></div>
             
-           
+                
                 <!-- Container to load Dynamic charts -->
                 <div id="containerChart" style="margin-top: 0px;">
                 </div>

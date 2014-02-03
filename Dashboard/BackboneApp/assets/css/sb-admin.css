@@ -16,7 +16,7 @@ body {
 @media (max-width: 480px) 
 {
     .dataTables_filter{display:none;}
-
+    .dashboard-heading {font-size: 14px;}
 }
 
 #wrapper {

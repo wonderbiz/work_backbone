@@ -3,8 +3,9 @@
 /*This js is responsible to route URLs and call relevant methods to render data on UI */
 
 /* Globally defined URL of Web-Service */
-var ServiceURL = 'http://medicalfair.wonderbizglobal.com/Services/MDIndiaService.svc/json/';
+var ServiceURL = 'http://tmedicalfair.wonderbizglobal.com/Services/MDIndiaService.svc/json/';
 
+var chartContainerFlag = false;
 var ApplicationRouter = Backbone.Router.extend({
     routes: {
         "": "list",
@@ -39,9 +40,11 @@ var ApplicationRouter = Backbone.Router.extend({
     /*Method to retrive Weekly, Monthly general User details */
     GeneralWiseUsers: function (id) {
         var uData = new GeneralUserDataCollection([], { id: id });
+       
        $('#container').html("");
         $('#containerTable').html("");
         $('#containerChart').html("");
+
         $('#containerChart').css('display', 'none');
         $('#container').css('display', 'block');
           $('#containerTable').css('display', 'block');
@@ -62,7 +65,11 @@ var ApplicationRouter = Backbone.Router.extend({
 
     RegSecWiseUsers: function (id) {
         var uData = new RegSecUserDataCollection([], { id: id });
-//        $('#container').html("");
+        if(chartContainerFlag == true)
+        {
+            $('#container').html("");
+              $('#container').css('display', 'none');
+        }
          $('#containerTable').html("");
          $('#containerChart').html("");
         $('#containerChart').css('display', 'none');
@@ -79,7 +86,11 @@ var ApplicationRouter = Backbone.Router.extend({
     /*Method to retrive detailed Country-wise data */
     CountryWiseUsers: function (id) {
         var uData = new CountryUserDataCollection([], { id: id });
-
+         if(chartContainerFlag == true)
+        {
+            $('#container').html("");
+              $('#container').css('display', 'none');
+        }
         $('#containerTable').html("");
          $('#containerChart').html("");
         $('#containerChart').css('display', 'none');
@@ -106,12 +117,15 @@ var ApplicationRouter = Backbone.Router.extend({
         $('#containerTable').html("");
         $('#containerChart').html("");
         $('#containerChart').css('display', 'block');
-        $('#container').css('display', 'none');
+        $('#container').css('display', 'block');
         $('#containerTable').css('display', 'none');
           $('#chartTableToggle').css('display', 'block');
         this.selectPill('li.dashboard_tab');
-
+        $('#btnChart').addClass('active');
+          $('#btnTAb').removeClass('active');
+         // GeneralWiseUsersChart();
          DashboardChartViewer();
+         chartContainerFlag = true;
         var tableView = new TableView({
             el: $('#containerTable'),
             model: mydata// DataCollection()
@@ -134,15 +148,27 @@ var ApplicationRouter = Backbone.Router.extend({
            $('#containerTable').css('display', 'block');
           $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.country_tab');
-
-          if(window.ConSavedModel.length>0)
-        {
-           cData.add(window.ConSavedModel.models);
+        chartContainerFlag = false;
+//        if(!this.ConSavedModel)
+//        {
+//            this.ConSavedModel = new Backbone.Collection;
+//            cData.fetch({
+//            success: function(model,resp){
+//            _this.ConSavedModel.add(model.models);
+//            }});
+//        }
+        
+          if(window.ConSavedModel)
+            {
+                if(window.ConSavedModel.length>0)
+                {
+                cData.add(window.ConSavedModel.models);
+                }
         }
         else{
                 cData.fetch();
         }    
-
+        
 
         var CTableView = new ComTableView({
             tableHeader: 'Details By Country',
@@ -165,10 +191,12 @@ var ApplicationRouter = Backbone.Router.extend({
          $('#containerTable').css('display', 'block');
            $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.org_tab');
-
+         chartContainerFlag = false;
+        if(window.OrgSavedModel){
           if(window.OrgSavedModel.length>0)
-        {
-           rData.add(window.OrgSavedModel.models);
+            {
+             rData.add(window.OrgSavedModel.models);
+            }
         }
         else{
                 rData.fetch();
@@ -196,10 +224,12 @@ var ApplicationRouter = Backbone.Router.extend({
          $('#containerTable').css('display', 'block');
            $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.business_tab');
-
+         chartContainerFlag = false;
+        if(window.BusSavedModel){
           if(window.BusSavedModel.length>0)
         {
            rData.add(window.BusSavedModel.models);
+        }
         }
         else{
                 rData.fetch();
@@ -226,10 +256,12 @@ var ApplicationRouter = Backbone.Router.extend({
          $('#containerTable').css('display', 'block');
            $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.products_tab');
-
+         chartContainerFlag = false;
+         if(window.ProSavedModel){
           if(window.ProSavedModel.length>0)
-        {
-           rData.add(window.ProSavedModel.models);
+            {
+            rData.add(window.ProSavedModel.models);
+            }
         }
         else{
                 rData.fetch();
@@ -258,10 +290,12 @@ var ApplicationRouter = Backbone.Router.extend({
          $('#containerTable').css('display', 'block');
            $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.source_tab');
-
+         chartContainerFlag = false;
+        if(window.SrcSavedModel){
           if(window.SrcSavedModel.length>0)
         {
            rData.add(window.SrcSavedModel.models);
+        }
         }
         else{
                 rData.fetch();
@@ -289,10 +323,12 @@ var ApplicationRouter = Backbone.Router.extend({
          $('#containerTable').css('display', 'block');
            $('#chartTableToggle').css('display', 'none');
         this.selectPill('li.decission_tab');
-
+         chartContainerFlag = false;
+      if(window.DecSavedModel){
           if(window.DecSavedModel.length>0)
         {
            rData.add(window.DecSavedModel.models);
+        }
         }
         else{
                 rData.fetch();
@@ -316,15 +352,24 @@ function GeneralWiseUsersChart() {
 
     var chartData = new GeneralUserDataChart();
     $('#containerChart').html("");
+   if(window.TimeAreaChartSavedModel){
+          if(window.TimeAreaChartSavedModel.length>0)
+        {
+           chartData.add(window.TimeAreaChartSavedModel.models);
+        }
+        }
+        else{
+                chartData.fetch();
+        }    
 
     var UTableView = new ComUserTableChartView({
         chartHeader: 'User Registration Analysis',
         el: $('#container'),
-        model: chartData
+        model: chartData,
         
     });
 
-    chartData.fetch();
+    
 }
 
 function DashboardChartViewer(){
@@ -338,7 +383,8 @@ var ProData = new ProductsDataCollection([], { id: 4 });
 var ConData = new CountryDataCollection();
 var SrcData = new SourceDataCollection([], { id: 5 });
 var DecData = new DecissionDataCollection([], { id: 8 });
-
+  var timeAreaChartData = new GeneralUserDataChart();
+  
     if(!this.OrgSavedModel)
     {
         this.OrgSavedModel = new Backbone.Collection;
@@ -418,6 +464,23 @@ var DecData = new DecissionDataCollection([], { id: 8 });
         ConData.add(this.ConSavedModel.models);
     }
 
+    if(!this.TimeAreaChartSavedModel)
+    {
+        this.TimeAreaChartSavedModel = new Backbone.Collection;
+        timeAreaChartData.fetch({
+        success: function(model,resp){
+        _this.TimeAreaChartSavedModel.add(model.models);
+    }});
+    }
+    else if (this.TimeAreaChartSavedModel.models.length>0)
+    {
+        timeAreaChartData.add(this.TimeAreaChartSavedModel.models);
+    }
+ 
+     
+
+  
+
 
 var OChartView = new DashboardChartView({
 el: $('#containerChart'),
@@ -427,6 +490,14 @@ classificationCode: 'bar',
 chartHeader: 'Work Organization'
 
 });  
+var TimeAreaChartView = new DashboardChartView({
+el: $('#container'),
+model: timeAreaChartData,
+tableHeader:'',
+classificationCode: 'TimeArea',
+chartHeader: 'User Registration Analysis'
+
+}); 
 
 var BChartView = new DashboardChartView({
 el: $('#containerChart'),
